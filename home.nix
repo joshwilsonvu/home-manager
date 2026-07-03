@@ -1,8 +1,7 @@
 { config, pkgs, ... }:
 
 let
-  nixglOverlay = import <nixgl>;
-  nixglPkgs = pkgs.extend nixglOverlay;
+  nixglPkgs = import <nixgl> { pkgs = import <nixpkgs> {}; };
 in
 {
   home.username = "josh";
