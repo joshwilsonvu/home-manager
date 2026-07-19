@@ -1,0 +1,165 @@
+[audio]
+enable_sounds = true
+
+[bar.default]
+background_opacity = 0.8
+center = [ "audio_visualizer", "media" ]
+end = [ "clipboard", "network", "battery", "notifications", "settings", "session" ]
+margin_edge = 0
+margin_ends = 400
+padding = 16
+radius = 16
+radius_top_left = 80
+radius_top_right = 80
+concave_edge_corners = true
+shadow = false
+start = [ "clock" ]
+thickness = 32
+widget_spacing = 12
+
+[bar.default.dead_zone]
+command = "noctalia msg panel-toggle control-center"
+
+[brightness]
+sync_all_monitors = true
+
+[calendar]
+enabled = true
+
+[control_center]
+hidden_tabs = [ "screen-time" ]
+sidebar = "full"
+sidebar_section = "full"
+width = 800
+
+[desktop_widgets]
+schema_version = 2
+widget_order = []
+
+[desktop_widgets.grid]
+cell_size = 16
+major_interval = 4
+visible = true
+
+[desktop_widgets.widget]
+
+[idle]
+behavior_order = [ "lock", "screen-off", "lock-and-suspend" ]
+
+[idle.behavior.lock]
+action = "lock"
+enabled = true
+timeout = 600.0
+
+[idle.behavior.lock-and-suspend]
+action = "lock_and_suspend"
+enabled = true
+timeout = 900.0
+
+[idle.behavior.screen-off]
+action = "screen_off"
+enabled = true
+timeout = 660.0
+
+[location]
+auto_locate = true
+
+[lockscreen]
+enabled = false
+blur_intensity = 0.7
+blurred_desktop = true
+fingerprint = true
+
+[nightlight]
+enabled = true
+temperature_night = 5000
+
+[osd]
+offset_x = 32
+offset_y = 32
+position = "bottom_center"
+position_vertical = "bottom_right"
+
+[shell]
+date_format = "{:%a, %B%e}"
+polkit_agent = true
+settings_show_advanced = true
+show_location = false
+telemetry_enabled = true
+time_format = "{:%I:%M}"
+launch_apps_as_systemd_services = true
+external_ip_enabled = true
+
+[shell.animation]
+enabled = true
+speed = 1.5
+
+[shell.launcher]
+session_search = true
+
+[shell.launcher.providers.emoji]
+prefix = ""
+
+[shell.launcher.providers.windows]
+prefix = ""
+
+[shell.launcher.providers.session]
+prefix = ""
+
+[shell.panel]
+clipboard_placement = "attached"
+launcher_placement = "attached"
+open_near_click_clipboard = true
+open_near_click_control_center = true
+open_near_click_launcher = true
+open_near_click_session = true
+open_near_click_wallpaper = true
+
+[shell.screen_corners]
+enabled = true
+size = 64
+
+[theme]
+builtin = "Noctalia"
+community_palette = "Flexoki"
+mode = "dark"
+source = "community"
+wallpaper_scheme = "m3-content"
+
+[wallpaper]
+enabled = false
+fill_color = "#000000"
+transition_on_startup = true
+
+[weather]
+unit = "imperial"
+
+[widget.audio_visualizer]
+bands = 24
+centered = false
+color_1 = "on_surface"
+color_2 = "on_surface"
+mirrored = false
+width = 64
+
+[widget.battery]
+hide_when_full = true
+hide_when_plugged = true
+show_label = false
+
+[widget.clock]
+format = "{:%a %B %e,%l:%M %p}"
+
+[widget.media]
+hide_album_art = true
+hide_when_no_media = true
+title_scroll = "on_hover"
+
+[widget.network]
+show_label = false
+
+[widget.spacer_2]
+type = "spacer"
+
+[widget.taskbar]
+show_all_outputs = true

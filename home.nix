@@ -1,29 +1,53 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 let
-  nixglPkgs = import <nixgl> { pkgs = import <nixpkgs> {}; };
-  # TODO: just use pkgs.noctalia-shell v5 when available
-  # Fetching from GitHub directly because the release tarball is missing the nix/ directory
-  noctalia-src = fetchTarball {
-    url = "https://github.com/noctalia-dev/noctalia/archive/refs/tags/v5.0.0-beta1.tar.gz";
-    sha256 = "sha256:194fhlxn79d8hg0qgczk51jrbnifnvhgikz6npqirzb0kfifxyz9";
+  # make symlinks to dotfiles from version-controlled dir
+  # see https://blog.daniel-beskin.com/2025-10-18-symlinking-home-manager
+  inherit (config.lib.file) mkOutOfStoreSymlink;
+  inherit (lib) flatten flip mergeAttrsList;
+
+  pipe = flip lib.pipe;
+  flatMerge = pipe [flatten mergeAttrsList];
+  toSrcFile = name: "${homeDirectory}/.config/home-manager/${name}";
+  link = pipe [toSrcFile mkOutOfStoreSymlink];
+  linkFile = name: {${name}.source = link name;};
+  linkDir = name: {
+    ${name} = {
+      source = link name;
+      recursive = true;
+    };
   };
-  noctalia = import noctalia-src {};
+  linkConfFiles = map linkFile;
+  linkConfDirs = map linkDir;
+
+  # shorthand for linking files and dirs from this directory to .config
+  confFiles = linkConfFiles [];
+  confDirs = linkConfDirs [
+    "fontconfig"
+    "spicetify"
+    "niri"
+    "noctalia"
+    "neowall"
+    "zed"
+  ];
+  confLinks = flatMerge [confFiles confDirs];
+
   username = "josh";
+  homeDirectory = "/home/${username}";
 in
 {
   targets.genericLinux.enable = true;
-  nixpkgs.config.allowUnfree = true;
+
   home = {
-    username = username;
-    homeDirectory = "/home/${username}";
+  	inherit username homeDirectory;
     stateVersion = "26.05";
 
     # Core packages for the Niri desktop environment
     packages = [
-      nixglPkgs.auto.nixGLDefault
+      pkgs.nixgl.auto.nixGLDefault
       # CLIs
       pkgs.git
+      pkgs.bat
       pkgs.btop
       pkgs.bun
       pkgs.gh
@@ -32,79 +56,60 @@ in
       pkgs.nodejs
       pkgs.pnpm
       pkgs.jq
+      pkgs.ghostty
       pkgs.kitty
       pkgs.fzf
       pkgs.ripgrep
       pkgs.nvtopPackages.amd # nvtop
+      pkgs.nixd # Nix lsp
+      pkgs.fastfetch
+      pkgs.spicetify-cli
       # desktop environment
       pkgs.niri
       pkgs.xdg-desktop-portal-gtk
+      pkgs.neowall
       # desktop applications
+      pkgs.firefox
+      pkgs.tailscale
       pkgs.opencode-desktop
       pkgs.zed-editor
       pkgs.obsidian
+      pkgs.nwg-displays
+      # fonts
+      pkgs.ibm-plex
+      # theming
+      pkgs.nwg-look
+      pkgs.adw-gtk3
+      pkgs.qt6Packages.qt6ct
+      pkgs.pywalfox-native
+      pkgs.millennium-steam
     ];
     shell.enableBashIntegration = true;
 
-    # Wrapper script that ensures nixGL is in PATH before launching niri-session
-    file.".local/bin/niri-session-hm" = {
-      executable = true;
-      text = ''
-        #!/usr/bin/env bash
-        export PATH="${config.home.profileDirectory}/bin:$PATH"
-        exec nixGL niri-session
-      '';
-    };
-
-    # Wayland session desktop entry for GDM
-    file.".local/share/wayland-sessions/niri-nix.desktop".text = ''
-      [Desktop Entry]
-      Name=Niri (Nix)
-      Comment=A scrollable-tiling Wayland compositor (via Nix + NixGL)
-      Exec=/home/josh/.local/bin/niri-session-hm
-      Type=Application
-      DesktopNames=niri
-    '';
+    # Create desktop entry so session manager can start Niri
+    file.".local/share/wayland-sessions/niri.desktop".source = ./niri.desktop;
   };
 
-  # Minimal Niri config; defaults are used where omitted
-  xdg.configFile."niri/config.kdl".source = ./niri-config.kdl;
+  home.file = {
+  	# Symlink Niri's systemd user units into ~/.local/share/systemd/user/ so
+  	# systemd can find them, but sd-switch won't restart niri mid-session.
+    ".local/share/systemd/user/niri.service".source =
+      "${pkgs.niri}/lib/systemd/user/niri.service";
+    ".local/share/systemd/user/niri-shutdown.target".source =
+      "${pkgs.niri}/lib/systemd/user/niri-shutdown.target";
+    # Symlink this home-manager config dir to ~/dev/dotfiles
+    "${homeDirectory}/dev/dotfiles".source = mkOutOfStoreSymlink "${homeDirectory}/.config/home-manager";
+  };
 
-  # Portal configuration required by Niri for screensharing, file dialogs, etc.
-  xdg.configFile."xdg-desktop-portal/niri-portals.conf".source =
+  # Apply shorthand config files/dirs
+  xdg.configFile = confLinks // {
+    # Portal configuration required by Niri for screensharing, file dialogs, etc.
+    "xdg-desktop-portal/niri-portals.conf".source =
     "${pkgs.niri}/share/xdg-desktop-portal/niri-portals.conf";
-
-  # Symlink Niri's systemd user units so niri-session can start them
-  xdg.configFile."systemd/user/niri.service".source =
-    "${pkgs.niri}/lib/systemd/user/niri.service";
-  xdg.configFile."systemd/user/niri-shutdown.target".source =
-    "${pkgs.niri}/lib/systemd/user/niri-shutdown.target";
-
-  imports = [
-    noctalia.homeModule
-  ];
+  };
 
   programs = {
-    noctalia = {
-      enable = true;
-  
-      settings = {
-        theme = {
-          mode = "dark";
-          source = "community";
-          community = "Flexoki";
-        };
-        shell = {
-          launch_apps_as_systemd_services = true;
-          animation = {
-            enabled = true;
-            speed = 2.0;
-          };
-        };
-      };
-  
-      systemd.enable = true;
-    };
+    noctalia.enable = true;
     # Apps
     obsidian.enable = true;
     zed-editor.enable = true;
@@ -112,7 +117,6 @@ in
     	enable = true;
     	enableGitIntegration = true;
     };
-    
   };
 
   # Let Home Manager install and manage itself

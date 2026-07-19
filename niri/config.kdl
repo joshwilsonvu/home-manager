@@ -1,0 +1,429 @@
+// Niri config - managed by Home Manager
+// For arranging monitors, run `nwg-displays` (appears as "Displays Settings" in launcher)
+
+// Noctalia - https://docs.noctalia.dev/v5/compositor-settings/niri/
+spawn-at-startup "noctalia"
+// spawn-at-startup "neowall"
+
+window-rule {
+  // Rounded corners for a modern look.
+  geometry-corner-radius 20
+
+  // Clips window contents to the rounded corner boundaries.
+  clip-to-geometry true
+}
+
+debug {
+  // Allows notification actions and window activation from Noctalia.
+  honor-xdg-activation-with-invalid-serial
+}
+
+// Stationary wallpaper
+// Place the regular wallpaper on the backdrop.
+layer-rule {
+  match namespace="^noctalia-wallpaper"
+  place-within-backdrop true
+}
+
+// Optionally, disable workspace shadows in the overview.
+overview {
+  workspace-shadow {
+    off
+  }
+  zoom 0.33
+}
+
+// Blur
+// Apps: blur them all without xray so it looks more realistic.
+window-rule {
+  background-effect {
+    blur true
+    xray false
+  }
+}
+
+// Disable xray on all Noctalia surfaces so it looks more realistic.
+// Noctalia publishes blur regions automatically when ext-background-effects is available.
+layer-rule {
+  match namespace="^noctalia-(bar-[^\"]+|notification|dock|panel|attached-panel|osd)$"
+  background-effect {
+    xray false
+    // blur false
+  }
+}
+
+// fine-tune the blur effect globally.
+blur {
+  passes 2        // more passes = stronger blur (default: 3)
+  offset 3.0      // sample distance per pass (default: 3.0)
+  noise 0.03      // grain overlay (default: 0.02)
+  saturation 1.1  // color saturation boost (default: 1.5)
+}
+
+// This config is in the KDL format: https://kdl.dev
+// "/-" comments out the following node.
+// Check the wiki for a full description of the configuration:
+// https://niri-wm.github.io/niri/Configuration:-Introduction
+
+// Input device configuration.
+// Find the full list of options on the wiki:
+// https://niri-wm.github.io/niri/Configuration:-Input
+input {
+  keyboard {
+    xkb {
+      layout "us"
+      options "caps:swapescape"
+    }
+
+    // Enable numlock on startup, omitting this setting disables it.
+    numlock
+    repeat-delay 400
+    repeat-rate 25
+  }
+
+  // Next sections include libinput settings.
+  // Omitting settings disables them, or leaves them at their default values.
+  // All commented-out settings here are examples, not defaults.
+  touchpad {
+    // off
+    tap
+    // dwt
+    // dwtp
+    // drag false
+    // drag-lock
+    natural-scroll
+    // accel-speed 0.2
+    // accel-profile "flat"
+    // scroll-method "two-finger"
+    // disabled-on-external-mouse
+  }
+
+  mouse {
+    // off
+    natural-scroll
+    // accel-speed 0.2
+    // accel-profile "flat"
+    // scroll-method "no-scroll"
+  }
+
+  // Uncomment this to make the mouse warp to the center of newly focused windows.
+  // warp-mouse-to-focus
+
+  // Focus windows and outputs automatically when moving the mouse into them.
+  // Setting max-scroll-amount="0%" makes it work only on windows already fully on screen.
+  focus-follows-mouse max-scroll-amount="50%"
+}
+
+// Settings that influence how windows are positioned and sized.
+// Find more information on the wiki:
+// https://niri-wm.github.io/niri/Configuration:-Layout
+layout {
+  // Set transparent workspace background color so the backdrop is visible at all times.
+  background-color "transparent"
+
+  // When to center a column when changing focus, options are:
+  // - "never", default behavior, focusing an off-screen column will keep at the left
+  //   or right edge of the screen.
+  // - "always", the focused column will always be centered.
+  // - "on-overflow", focusing a column will center it if it doesn't fit
+  //   together with the previously focused column.
+  center-focused-column "never"
+
+  // You can customize the widths that "switch-preset-column-width" (Mod+R) toggles between.
+  preset-column-widths {
+    // Proportion sets the width as a fraction of the output width, taking gaps into account.
+    // For example, you can perfectly fit four windows sized "proportion 0.25" on an output.
+    // The default preset widths are 1/3, 1/2 and 2/3 of the output.
+    proportion 0.33333
+    proportion 0.5
+    proportion 0.66667
+  	proportion 1.0
+  }
+
+  // You can change the default width of the new windows.
+  // default-column-width { proportion 0.5; }
+  // If you leave the brackets empty, the windows themselves will decide their initial width.
+  default-column-width {
+    proportion 0.5;
+  }
+
+  // By default focus ring and border are rendered as a solid background rectangle
+  // behind windows. That is, they will show up through semitransparent windows.
+  // This is because windows using client-side decorations can have an arbitrary shape.
+  //
+  // If you don't like that, you should uncomment `prefer-no-csd` below.
+  // Niri will draw focus ring and border *around* windows that agree to omit their
+  // client-side decorations.
+  //
+  // Alternatively, you can override it with a window rule called
+  // `draw-border-with-background`.
+
+  // You can change how the focus ring looks.
+  focus-ring {
+    // Uncomment this line to disable the focus ring.
+    off
+
+    // How many logical pixels the ring extends out from the windows.
+    width 2
+  }
+
+  // You can enable drop shadows for windows.
+  shadow {
+    // Uncomment the next line to enable shadows.
+    // on
+
+    // By default, the shadow draws only around its window, and not behind it.
+    // Uncomment this setting to make the shadow draw behind its window.
+    //
+    // Note that niri has no way of knowing about the CSD window corner
+    // radius. It has to assume that windows have square corners, leading to
+    // shadow artifacts inside the CSD rounded corners. This setting fixes
+    // those artifacts.
+    //
+    // However, instead you may want to set prefer-no-csd and/or
+    // geometry-corner-radius. Then, niri will know the corner radius and
+    // draw the shadow correctly, without having to draw it behind the
+    // window. These will also remove client-side shadows if the window
+    // draws any.
+    //
+    // draw-behind-window true
+
+    // You can change how shadows look. The values below are in logical
+    // pixels and match the CSS box-shadow properties.
+
+    // Softness controls the shadow blur radius.
+    softness 30
+
+    // Spread expands the shadow.
+    spread 5
+
+    // Offset moves the shadow relative to the window.
+    offset x=0 y=5
+  }
+}
+
+hotkey-overlay {
+  // Uncomment this line to disable the "Important Hotkeys" pop-up at startup.
+  // skip-at-startup
+}
+
+// Uncomment this line to ask the clients to omit their client-side decorations if possible.
+// If the client will specifically ask for CSD, the request will be honored.
+// Additionally, clients will be informed that they are tiled, removing some client-side rounded corners.
+// This option will also fix border/focus ring drawing behind some semitransparent windows.
+// After enabling or disabling this, you need to restart the apps for this to take effect.
+// prefer-no-csd
+
+// You can change the path where screenshots are saved.
+// A ~ at the front will be expanded to the home directory.
+// The path is formatted with strftime(3) to give you the screenshot date and time.
+screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
+
+// You can also set this to null to disable saving screenshots to disk.
+// screenshot-path null
+
+// Animation settings.
+// The wiki explains how to configure individual animations:
+// https://niri-wm.github.io/niri/Configuration:-Animations
+animations {
+  // Uncomment to turn off all animations.
+  // off
+
+  // Slow down all animations by this factor. Values below 1 speed them up instead.
+  // slowdown 0.8
+}
+
+// Work around WezTerm's initial configure bug
+// by setting an empty default-column-width.
+window-rule {
+  // This regular expression is intentionally made as specific as possible,
+  // since this is the default config, and we want no false positives.
+  // You can get away with just app-id="wezterm" if you want.
+  match app-id=r#"^org\.wezfurlong\.wezterm$"#
+  default-column-width {}
+}
+
+// Open the Firefox picture-in-picture player as floating by default.
+window-rule {
+  // This app-id regular expression will work for both:
+  // - host Firefox (app-id is "firefox")
+  // - Flatpak Firefox (app-id is "org.mozilla.firefox")
+  match app-id=r#"firefox$"# title="^Picture-in-Picture$"
+  open-floating true
+}
+
+binds {
+  // Keys consist of modifiers separated by + signs, followed by an XKB key name
+  // in the end. To find an XKB name for a particular key, you may use a program
+  // like wev.
+  //
+  // "Mod" is a special modifier equal to Super when running on a TTY, and to Alt
+  // when running as a winit window.
+  //
+  // Most actions that you can bind here can also be invoked programmatically with
+  // `niri msg action do-something`.
+
+  // Mod-Shift-/, which is usually the same as Mod-?,
+  // shows a list of important hotkeys.
+  Mod+Shift+Slash { show-hotkey-overlay; }
+
+  // Suggested binds for running programs: terminal, app launcher, screen locker.
+  Mod+T hotkey-overlay-title="Terminal" { spawn "kitty"; }
+  Mod+B hotkey-overlay-title="Browser" { spawn "firefox"; }
+  Mod+E hotkey-overlay-title="Files" { spawn "nautilus"; }
+  Mod+H hotkey-overlay-title="Home Manager switch" { spawn "bash" "-c" "kitty home-manager switch"; }
+
+  // Core Noctalia binds
+  Mod+Space hotkey-overlay-title="Launcher" { spawn-sh "noctalia msg panel-toggle launcher"; }
+  Mod+Period hotkey-overlay-title="Control center" { spawn-sh "noctalia msg panel-toggle control-center"; }
+  Mod+Comma hotkey-overlay-title="Settings" { spawn-sh "noctalia msg settings-toggle"; }
+
+  // Audio & Brightness
+  XF86AudioRaiseVolume allow-when-locked=true { spawn-sh "noctalia msg volume-up"; }
+  XF86AudioLowerVolume allow-when-locked=true { spawn-sh "noctalia msg volume-down"; }
+  XF86AudioMute allow-when-locked=true { spawn-sh "noctalia msg volume-mute"; }
+  XF86MonBrightnessUp allow-when-locked=true { spawn-sh "noctalia msg brightness-up"; }
+  XF86MonBrightnessDown allow-when-locked=true { spawn-sh "noctalia msg brightness-down"; }
+
+  // This will work with any MPRIS-enabled media player.
+  XF86AudioPlay        allow-when-locked=true { spawn-sh "playerctl play-pause"; }
+  XF86AudioPause       allow-when-locked=true { spawn-sh "playerctl play-pause"; }
+  XF86AudioStop        allow-when-locked=true { spawn-sh "playerctl stop"; }
+  XF86AudioPrev        allow-when-locked=true { spawn-sh "playerctl previous"; }
+  XF86AudioNext        allow-when-locked=true { spawn-sh "playerctl next"; }
+
+  Super+Alt+L hotkey-overlay-title="Lock the Screen: swaylock" { spawn "swaylock"; }
+
+  // Open/close the Overview: a zoomed-out view of workspaces and windows.
+  // You can also move the mouse into the top-left hot corner,
+  // or do a four-finger swipe up on a touchpad.
+  Mod+O repeat=false { toggle-overview; }
+
+  Mod+Q repeat=false { close-window; }
+
+  Mod+Left  { focus-column-left; }
+  Mod+Down  { focus-window-or-workspace-down; }
+  Mod+Up    { focus-window-or-workspace-up; }
+  Mod+Right { focus-column-right; }
+
+  Mod+Shift+Left  { move-column-left; }
+  Mod+Shift+Down  { move-window-down-or-to-workspace-down; }
+  Mod+Shift+Up    { move-window-up-or-to-workspace-up; }
+  Mod+Shift+Right { move-column-right; }
+
+  Mod+Home { focus-column-first; }
+  Mod+End  { focus-column-last; }
+  Mod+Ctrl+Home { move-column-to-first; }
+  Mod+Ctrl+End  { move-column-to-last; }
+
+  Mod+Ctrl+Left  { focus-monitor-left; }
+  Mod+Ctrl+Down  { focus-monitor-down; }
+  Mod+Ctrl+Up    { focus-monitor-up; }
+  Mod+Ctrl+Right { focus-monitor-right; }
+
+  Mod+Shift+Ctrl+Left  { move-workspace-to-monitor-left; }
+  Mod+Shift+Ctrl+Down  { move-workspace-to-monitor-down; }
+  Mod+Shift+Ctrl+Up    { move-workspace-to-monitor-up; }
+  Mod+Shift+Ctrl+Right { move-workspace-to-monitor-right; }
+
+
+  Mod+Shift+Page_Down { move-workspace-down; }
+  Mod+Shift+Page_Up   { move-workspace-up; }
+
+  // You can bind mouse wheel scroll ticks using the following syntax.
+  // These binds will change direction based on the natural-scroll setting.
+  //
+  // To avoid scrolling through workspaces really fast, you can use
+  // the cooldown-ms property. The bind will be rate-limited to this value.
+  // You can set a cooldown on any bind, but it's most useful for the wheel.
+  Mod+WheelScrollDown      cooldown-ms=150 { focus-window-or-workspace-down; }
+  Mod+WheelScrollUp        cooldown-ms=150 { focus-window-or-workspace-up; }
+  Mod+Shift+WheelScrollDown cooldown-ms=150 { move-window-down-or-to-workspace-down; }
+  Mod+Shift+WheelScrollUp   cooldown-ms=150 { move-window-up-or-to-workspace-up; }
+
+  Mod+WheelScrollRight      { focus-column-right; }
+  Mod+WheelScrollLeft       { focus-column-left; }
+  Mod+Shift+WheelScrollRight { move-column-right; }
+  Mod+Shift+WheelScrollLeft  { move-column-left; }
+
+
+  // Similarly, you can bind touchpad scroll "ticks".
+  // Touchpad scrolling is continuous, so for these binds it is split into
+  // discrete intervals.
+  // These binds are also affected by touchpad's natural-scroll, so these
+  // example binds are "inverted", since we have natural-scroll enabled for
+  // touchpads by default.
+  // Mod+TouchpadScrollDown { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.02+"; }
+  // Mod+TouchpadScrollUp   { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.02-"; }
+
+  // Switches focus between the current and the previous workspace.
+  // Mod+Tab { focus-workspace-previous; }
+
+  // Cycle through widths set in preset-column-widths.
+  Mod+R { switch-preset-column-width; }
+  // Cycling through the presets in reverse order is also possible.
+  Mod+Shift+R { switch-preset-column-width-back; }
+
+  Mod+Ctrl+Shift+R { switch-preset-window-height; }
+  Mod+Ctrl+R { reset-window-height; }
+
+  Mod+F { fullscreen-window; }
+  Mod+C { center-column; }
+
+  // Center all fully visible columns on screen.
+  Mod+Shift+C { center-visible-columns; }
+
+  // Finer width adjustments.
+  // This command can also:
+  // * set width in pixels: "1000"
+  // * adjust width in pixels: "-5" or "+5"
+  // * set width as a percentage of screen width: "25%"
+  // * adjust width as a percentage of screen width: "-10%" or "+10%"
+  // Pixel sizes use logical, or scaled, pixels. I.e. on an output with scale 2.0,
+  // set-column-width "100" will make the column occupy 200 physical screen pixels.
+  Mod+Minus { set-column-width "-10%"; }
+  Mod+Equal { set-column-width "+10%"; }
+
+  // Finer height adjustments when in column with other windows.
+  Mod+Shift+Minus { set-window-height "-10%"; }
+  Mod+Shift+Equal { set-window-height "+10%"; }
+
+  // Move the focused window between the floating and the tiling layout.
+  Mod+V       { toggle-window-floating; }
+  Mod+Shift+V { switch-focus-between-floating-and-tiling; }
+
+  // Toggle tabbed column display mode.
+  // Windows in this column will appear as vertical tabs,
+  // rather than stacked on top of each other.
+  Mod+W { toggle-column-tabbed-display; }
+
+  Print { screenshot; }
+  Ctrl+Print { screenshot-screen; }
+  Alt+Print { screenshot-window; }
+
+  // Applications such as remote-desktop clients and software KVM switches may
+  // request that niri stops processing the keyboard shortcuts defined here
+  // so they may, for example, forward the key presses as-is to a remote machine.
+  // It's a good idea to bind an escape hatch to toggle the inhibitor,
+  // so a buggy application can't hold your session hostage.
+  //
+  // The allow-inhibiting=false property can be applied to other binds as well,
+  // which ensures niri always processes them, even when an inhibitor is active.
+  Mod+Escape allow-inhibiting=false { toggle-keyboard-shortcuts-inhibit; }
+
+  // The quit action will show a confirmation dialog to avoid accidental exits.
+  Mod+Shift+E { quit; }
+  Ctrl+Alt+Delete { quit; }
+
+  // Powers off the monitors. To turn them back on, do any input like
+  // moving the mouse or pressing any other key.
+  Mod+Shift+P { power-off-monitors; }
+}
+
+// QT theming
+environment {
+  QT_QPA_PLATFORMTHEME "qt6ct"
+}
+
+include "./noctalia.kdl"
+include "./monitor.kdl"

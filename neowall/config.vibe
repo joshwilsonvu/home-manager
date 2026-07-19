@@ -1,0 +1,11 @@
+default {
+  shader moon.glsl
+  channels [
+    "~/.config/neowall/moon.jpg"
+  ]
+  shader_speed 1
+  mouse_interaction true
+  pause_coverage_threshold 0.95
+  shader_fps 20
+  pause_on_fullscreen false
+}
