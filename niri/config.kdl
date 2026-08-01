@@ -212,7 +212,7 @@ hotkey-overlay {
 // Additionally, clients will be informed that they are tiled, removing some client-side rounded corners.
 // This option will also fix border/focus ring drawing behind some semitransparent windows.
 // After enabling or disabling this, you need to restart the apps for this to take effect.
-// prefer-no-csd
+prefer-no-csd
 
 // You can change the path where screenshots are saved.
 // A ~ at the front will be expanded to the home directory.
@@ -268,10 +268,9 @@ binds {
   Mod+Shift+Slash { show-hotkey-overlay; }
 
   // Suggested binds for running programs: terminal, app launcher, screen locker.
-  Mod+T hotkey-overlay-title="Terminal" { spawn "kitty"; }
+  Mod+T hotkey-overlay-title="Terminal" { spawn "ghostty"; }
   Mod+B hotkey-overlay-title="Browser" { spawn "firefox"; }
   Mod+E hotkey-overlay-title="Files" { spawn "nautilus"; }
-  Mod+H hotkey-overlay-title="Home Manager switch" { spawn "bash" "-c" "kitty home-manager switch"; }
 
   // Core Noctalia binds
   Mod+Space hotkey-overlay-title="Launcher" { spawn-sh "noctalia msg panel-toggle launcher"; }
@@ -292,7 +291,7 @@ binds {
   XF86AudioPrev        allow-when-locked=true { spawn-sh "playerctl previous"; }
   XF86AudioNext        allow-when-locked=true { spawn-sh "playerctl next"; }
 
-  Super+Alt+L hotkey-overlay-title="Lock the Screen: swaylock" { spawn "swaylock"; }
+  Super+Alt+L hotkey-overlay-title="Lock screen" { spawn-sh "noctalia session lock"; }
 
   // Open/close the Overview: a zoomed-out view of workspaces and windows.
   // You can also move the mouse into the top-left hot corner,
@@ -361,11 +360,7 @@ binds {
 
   // Cycle through widths set in preset-column-widths.
   Mod+R { switch-preset-column-width; }
-  // Cycling through the presets in reverse order is also possible.
-  Mod+Shift+R { switch-preset-column-width-back; }
-
-  Mod+Ctrl+Shift+R { switch-preset-window-height; }
-  Mod+Ctrl+R { reset-window-height; }
+  Mod+Shift+R { switch-preset-window-height; }
 
   Mod+F { fullscreen-window; }
   Mod+C { center-column; }

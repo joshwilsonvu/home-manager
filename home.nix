@@ -45,6 +45,11 @@ in
     # Core packages for the Niri desktop environment
     packages = [
       pkgs.nixgl.auto.nixGLDefault
+      # language support
+      pkgs.python313
+      pkgs.python313Packages.uv
+      pkgs.libglvnd
+      pkgs.mesa
       # CLIs
       pkgs.git
       pkgs.bat
@@ -82,7 +87,6 @@ in
       pkgs.adw-gtk3
       pkgs.qt6Packages.qt6ct
       pkgs.pywalfox-native
-      pkgs.millennium-steam
     ];
     shell.enableBashIntegration = true;
 
@@ -109,6 +113,10 @@ in
   };
 
   programs = {
+    direnv = {
+      enable = true;
+      nix-direnv.enable = true;
+    };
     noctalia.enable = true;
     # Apps
     obsidian.enable = true;
