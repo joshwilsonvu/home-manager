@@ -23,13 +23,10 @@
     # that CI has pre-built. Using nixpkgs.follows causes cache misses.
     noctalia.url = "github:noctalia-dev/noctalia/cachix";
 
-    # Millennium pins its own nixpkgs commit (Bun FOD is version-sensitive),
-    # so we intentionally do not add a nixpkgs.follows here.
-    millennium.url = "github:SteamClientHomebrew/Millennium?dir=packages/nix";
   };
 
   outputs =
-    { self, nixpkgs, home-manager, nixgl, noctalia, millennium, ... }@inputs:
+    { self, nixpkgs, home-manager, nixgl, noctalia, ... }@inputs:
     {
       homeConfigurations.josh = home-manager.lib.homeManagerConfiguration {
         pkgs = import nixpkgs {
@@ -38,7 +35,6 @@
           overlays = [
             nixgl.overlays.default
             noctalia.overlays.default
-            millennium.overlays.default
           ];
         };
 

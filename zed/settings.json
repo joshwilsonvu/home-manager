@@ -155,12 +155,86 @@
       "network_hosts": ["github.com"],
     },
     "tool_permissions": {
+      "default": "allow",
       "tools": {
+        "delete_path": {
+          "default": "confirm"
+        },
         "terminal": {
+          "always_confirm": [
+            {
+              "pattern": "^git rebase"
+            },
+            {
+              "pattern": "^git reset"
+            }
+          ],
+          "always_deny": [
+            {
+              "pattern": "^git rebase"
+            },
+            {
+              "pattern": "^sudo"
+            }
+          ],
           "always_allow": [
             {
-              "pattern": "^pnpm\\s+test(\\s|$)",
+              "pattern": "^pnpm\\s+test(\\s|$)"
             },
+            {
+              "pattern": "^git\\s"
+            },
+            {
+              "pattern": "^nix develop"
+            },
+            {
+              "pattern": "^uv\\b"
+            },
+            {
+              "pattern": "^python"
+            },
+            {
+              "pattern": "^direnv allow"
+            },
+            {
+              "pattern": "^use flake"
+            },
+            {
+              "pattern": "^env"
+            },
+            {
+              "pattern": "^find"
+            },
+            {
+              "pattern": "^sort"
+            },
+            {
+              "pattern": "^printf"
+            },
+            {
+              "pattern": "^ls"
+            },
+            {
+              "pattern": "^nix flake"
+            },
+            {
+              "pattern": "^wc"
+            },
+            {
+              "pattern": "^printenv"
+            },
+            {
+              "pattern": "^head"
+            },
+            {
+              "pattern": "^tail"
+            },
+            {
+              "pattern": "^mkdir"
+            },
+            {
+              "pattern": "^pwd$"
+            }
           ],
         },
       },
@@ -348,7 +422,7 @@
     ],
     "play_sound_when_agent_done": "always",
     "use_modifier_to_send": true,
-    "default_profile": "write",
+    "default_profile": "zsh",
     "default_model": {
       "enable_thinking": true,
       "provider": "openrouter",
@@ -374,7 +448,7 @@
   "theme": {
     "mode": "system",
     "light": "Noctalia Light",
-    "dark": "Noctalia Dark Transparent",
+    "dark": "Noctalia Dark",
   },
   "theme_overrides": {
     "Flexoki Dark": {
