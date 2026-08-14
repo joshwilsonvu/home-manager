@@ -422,7 +422,7 @@
     ],
     "play_sound_when_agent_done": "always",
     "use_modifier_to_send": true,
-    "default_profile": "zsh",
+    "default_profile": "write",
     "default_model": {
       "enable_thinking": true,
       "provider": "openrouter",
@@ -448,7 +448,7 @@
   "theme": {
     "mode": "system",
     "light": "Noctalia Light",
-    "dark": "Noctalia Dark",
+    "dark": "Flexoki Dark",
   },
   "theme_overrides": {
     "Flexoki Dark": {

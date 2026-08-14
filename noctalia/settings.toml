@@ -127,9 +127,15 @@ source = "community"
 wallpaper_scheme = "m3-content"
 
 [wallpaper]
-enabled = false
-fill_color = "#000000"
+enabled = true
+fill_color = "#F2F0E5"
 transition_on_startup = true
+directory = "~/.config/home-manager/wallpapers"
+
+[wallpaper.automation]
+enabled                      = false
+interval_seconds             = 1800
+order                        = "random" # random | alphabetical
 
 [weather]
 unit = "imperial"

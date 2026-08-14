@@ -69,6 +69,7 @@ in
       pkgs.nixd # Nix lsp
       pkgs.fastfetch
       pkgs.spicetify-cli
+      pkgs.tealdeer
       # desktop environment
       pkgs.niri
       pkgs.xdg-desktop-portal-gtk
