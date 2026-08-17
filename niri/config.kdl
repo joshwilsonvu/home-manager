@@ -4,6 +4,16 @@ include "monitor.kdl"
 // Niri config - managed by Home Manager
 // For arranging monitors, run `nwg-displays` (appears as "Displays Settings" in launcher)
 
+environment {
+	// Disable IBus notification at startup
+    GTK_IM_MODULE ""
+    QT_IM_MODULE ""
+    QT_IM_MODULES ""
+    XMODIFIERS ""
+	// QT theming
+	QT_QPA_PLATFORMTHEME "qt6ct"
+}
+
 // Noctalia - https://docs.noctalia.dev/v5/compositor-settings/niri/
 spawn-at-startup "noctalia"
 // spawn-at-startup "neowall"
@@ -415,12 +425,11 @@ binds {
 
   // Powers off the monitors. To turn them back on, do any input like
   // moving the mouse or pressing any other key.
-  Mod+Shift+P { power-off-monitors; }
-}
+  Mod+Ctrl+P { power-off-monitors; }
 
-// QT theming
-environment {
-  QT_QPA_PLATFORMTHEME "qt6ct"
+  // Pause/resume the focused window's process.
+  Mod+P hotkey-overlay-title="Pause focused window" repeat=false { spawn-sh "kill -STOP $(niri msg --json focused-window | jq '.pid')"; }
+  Mod+Shift+P hotkey-overlay-title="Resume focused window" repeat=false { spawn-sh "kill -CONT $(niri msg --json focused-window | jq '.pid')"; }
 }
 
 include "./noctalia.kdl"

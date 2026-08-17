@@ -424,9 +424,10 @@
     "use_modifier_to_send": true,
     "default_profile": "write",
     "default_model": {
+      "effort": "low",
       "enable_thinking": true,
-      "provider": "openrouter",
-      "model": "openai/gpt-5.6-luna",
+      "provider": "copilot_chat",
+      "model": "claude-sonnet-4.6",
     },
     "dock": "left",
     "model_parameters": [],

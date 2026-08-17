@@ -29,6 +29,7 @@ let
     "noctalia"
     "neowall"
     "zed"
+    "ghostty"
   ];
   confLinks = flatMerge [confFiles confDirs];
 
@@ -76,11 +77,12 @@ in
       pkgs.neowall
       # desktop applications
       pkgs.firefox
-      pkgs.tailscale
       pkgs.opencode-desktop
       pkgs.zed-editor
-      pkgs.obsidian
       pkgs.nwg-displays
+      pkgs.qpwgraph # pipewire routing
+      pkgs.jamesdsp # pipewire effects
+      pkgs.lmstudio
       # fonts
       pkgs.ibm-plex
       # theming
@@ -120,7 +122,6 @@ in
     };
     noctalia.enable = true;
     # Apps
-    obsidian.enable = true;
     zed-editor.enable = true;
     delta = {
     	enable = true;
