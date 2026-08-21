@@ -76,13 +76,13 @@ in
       pkgs.xdg-desktop-portal-gtk
       pkgs.neowall
       # desktop applications
-      pkgs.firefox
       pkgs.opencode-desktop
       pkgs.zed-editor
       pkgs.nwg-displays
       pkgs.qpwgraph # pipewire routing
       pkgs.jamesdsp # pipewire effects
       pkgs.lmstudio
+      pkgs.vicinae
       # fonts
       pkgs.ibm-plex
       # theming
@@ -127,6 +127,7 @@ in
     	enable = true;
     	enableGitIntegration = true;
     };
+    firefox.enable = true;
   };
 
   # Let Home Manager install and manage itself

@@ -16,7 +16,7 @@ environment {
 
 // Noctalia - https://docs.noctalia.dev/v5/compositor-settings/niri/
 spawn-at-startup "noctalia"
-// spawn-at-startup "neowall"
+spawn-at-startup "vicinae" "server"
 
 window-rule {
   // Rounded corners for a modern look.
@@ -62,6 +62,12 @@ layer-rule {
   background-effect {
     xray false
     // blur false
+  }
+}
+layer-rule {
+  match namespace="vicinae"
+  background-effect {
+  	xray false
   }
 }
 
@@ -286,10 +292,12 @@ binds {
   Mod+E hotkey-overlay-title="Files" { spawn "nautilus"; }
 
   // Core Noctalia binds
-  Mod+Space hotkey-overlay-title="Launcher" { spawn-sh "noctalia msg panel-toggle launcher"; }
   Mod+Period hotkey-overlay-title="Control center" { spawn-sh "noctalia msg panel-toggle control-center"; }
   Mod+Comma hotkey-overlay-title="Settings" { spawn-sh "noctalia msg settings-toggle"; }
 
+  // Launcher (Vicinae, not "noctalia msg panel-toggle launcher")
+  Mod+Space hotkey-overlay-title="Launcher" { spawn-sh "vicinae toggle"; }
+  
   // Audio & Brightness
   XF86AudioRaiseVolume allow-when-locked=true { spawn-sh "noctalia msg volume-up"; }
   XF86AudioLowerVolume allow-when-locked=true { spawn-sh "noctalia msg volume-down"; }
