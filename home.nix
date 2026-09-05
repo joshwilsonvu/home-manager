@@ -71,6 +71,8 @@ in
       pkgs.fastfetch
       pkgs.spicetify-cli
       pkgs.tealdeer
+      pkgs.librepods # airpods
+      pkgs.pavucontrol
       # desktop environment
       pkgs.niri
       pkgs.xdg-desktop-portal-gtk

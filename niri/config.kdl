@@ -304,6 +304,8 @@ binds {
   XF86AudioMute allow-when-locked=true { spawn-sh "noctalia msg volume-mute"; }
   XF86MonBrightnessUp allow-when-locked=true { spawn-sh "noctalia msg brightness-up"; }
   XF86MonBrightnessDown allow-when-locked=true { spawn-sh "noctalia msg brightness-down"; }
+  Mod+XF86MonBrightnessUp allow-when-locked=true { spawn-sh "noctalia msg keyboard-backlight-up"; }
+  Mod+XF86MonBrightnessDown allow-when-locked=true { spawn-sh "noctalia msg keyboard-backlight-down"; }
 
   // This will work with any MPRIS-enabled media player.
   XF86AudioPlay        allow-when-locked=true { spawn-sh "noctalia msg media toggle"; }
@@ -312,7 +314,9 @@ binds {
   XF86AudioPrev        allow-when-locked=true { spawn-sh "noctalia msg media previous"; }
   XF86AudioNext        allow-when-locked=true { spawn-sh "noctalia msg media next"; }
 
-  Super+Alt+L hotkey-overlay-title="Lock screen" { spawn-sh "noctalia session lock"; }
+  Super+W hotkey-overlay-title="Next wallpaper" { spawn-sh "noctalia msg wallpaper-next"; }
+
+  Super+L hotkey-overlay-title="Lock screen" { spawn-sh "noctalia session lock"; }
 
   // Open/close the Overview: a zoomed-out view of workspaces and windows.
   // You can also move the mouse into the top-left hot corner,
@@ -320,35 +324,25 @@ binds {
   Mod+O repeat=false { toggle-overview; }
 
   Mod+Q repeat=false { close-window; }
+  // The quit action will show a confirmation dialog to avoid accidental exits.
+  Mod+Shift+Q { quit; }
+  Ctrl+Alt+Delete { quit; }
 
-  Mod+Left  { focus-column-left; }
-  Mod+Down  { focus-window-or-workspace-down; }
-  Mod+Up    { focus-window-or-workspace-up; }
-  Mod+Right { focus-column-right; }
+  Mod+Left  { focus-window-up-or-column-left; }
+  Mod+Down  { focus-window-or-monitor-down; }
+  Mod+Up    { focus-window-or-monitor-up; }
+  Mod+Right { focus-window-down-or-column-right; }
 
-  Mod+Shift+Left  { move-column-left; }
+  Mod+Shift+Left  { consume-or-expel-window-left; }
   Mod+Shift+Down  { move-window-down-or-to-workspace-down; }
   Mod+Shift+Up    { move-window-up-or-to-workspace-up; }
-  Mod+Shift+Right { move-column-right; }
+  Mod+Shift+Right { consume-or-expel-window-right; }
 
-  Mod+Home { focus-column-first; }
-  Mod+End  { focus-column-last; }
-  Mod+Ctrl+Home { move-column-to-first; }
-  Mod+Ctrl+End  { move-column-to-last; }
+  Mod+M { focus-monitor-next; }
+  Mod+Shift+M { move-window-to-monitor-next; }
 
-  Mod+Ctrl+Left  { focus-monitor-left; }
-  Mod+Ctrl+Down  { focus-monitor-down; }
-  Mod+Ctrl+Up    { focus-monitor-up; }
-  Mod+Ctrl+Right { focus-monitor-right; }
-
-  Mod+Shift+Ctrl+Left  { move-workspace-to-monitor-left; }
-  Mod+Shift+Ctrl+Down  { move-workspace-to-monitor-down; }
-  Mod+Shift+Ctrl+Up    { move-workspace-to-monitor-up; }
-  Mod+Shift+Ctrl+Right { move-workspace-to-monitor-right; }
-
-
-  Mod+Shift+Page_Down { move-workspace-down; }
-  Mod+Shift+Page_Up   { move-workspace-up; }
+  Mod+Page_Down { move-workspace-down; }
+  Mod+Page_Up   { move-workspace-up; }
 
   // You can bind mouse wheel scroll ticks using the following syntax.
   // These binds will change direction based on the natural-scroll setting.
@@ -380,15 +374,8 @@ binds {
   // Mod+Tab { focus-workspace-previous; }
 
   // Cycle through widths set in preset-column-widths.
-  Mod+R { switch-preset-column-width; }
-  Mod+Shift+R { switch-preset-window-height; }
-
-  Mod+F { fullscreen-window; }
-  Mod+C { center-column; }
-
-  // Center all fully visible columns on screen.
-  Mod+Shift+C { center-visible-columns; }
-
+  Mod+Equal { switch-preset-column-width; }
+  Mod+Minus { switch-preset-window-width-back; }
   // Finer width adjustments.
   // This command can also:
   // * set width in pixels: "1000"
@@ -397,21 +384,20 @@ binds {
   // * adjust width as a percentage of screen width: "-10%" or "+10%"
   // Pixel sizes use logical, or scaled, pixels. I.e. on an output with scale 2.0,
   // set-column-width "100" will make the column occupy 200 physical screen pixels.
-  Mod+Minus { set-column-width "-10%"; }
-  Mod+Equal { set-column-width "+10%"; }
-
-  // Finer height adjustments when in column with other windows.
-  Mod+Shift+Minus { set-window-height "-10%"; }
-  Mod+Shift+Equal { set-window-height "+10%"; }
+  Mod+Shift+Equal { set-column-width "+10%"; }
+  Mod+Shift+Minus { set-column-width "-10%"; }
+  
+  Mod+F { fullscreen-window; }
+  Mod+C { center-window; }
 
   // Move the focused window between the floating and the tiling layout.
   Mod+V       { toggle-window-floating; }
   Mod+Shift+V { switch-focus-between-floating-and-tiling; }
 
-  // Toggle tabbed column display mode.
+  // Toggle tabbed/"grouped" column display mode.
   // Windows in this column will appear as vertical tabs,
   // rather than stacked on top of each other.
-  Mod+W { toggle-column-tabbed-display; }
+  Mod+G { toggle-column-tabbed-display; }
 
   Print { screenshot; }
   Ctrl+Print { screenshot-screen; }
@@ -427,9 +413,6 @@ binds {
   // which ensures niri always processes them, even when an inhibitor is active.
   Mod+Escape allow-inhibiting=false { toggle-keyboard-shortcuts-inhibit; }
 
-  // The quit action will show a confirmation dialog to avoid accidental exits.
-  Mod+Shift+E { quit; }
-  Ctrl+Alt+Delete { quit; }
 
   // Powers off the monitors. To turn them back on, do any input like
   // moving the mouse or pressing any other key.
