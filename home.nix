@@ -67,6 +67,7 @@ in
       pkgs.fzf
       pkgs.ripgrep
       pkgs.nvtopPackages.amd # nvtop
+      pkgs.gamescope
       pkgs.nixd # Nix lsp
       pkgs.fastfetch
       pkgs.spicetify-cli
@@ -85,6 +86,8 @@ in
       pkgs.jamesdsp # pipewire effects
       pkgs.lmstudio
       pkgs.vicinae
+      pkgs.localsend
+      pkgs.sooperlooper
       # fonts
       pkgs.ibm-plex
       # theming
@@ -100,6 +103,9 @@ in
   };
 
   home.file = {
+    # Expose version-controlled user scripts through the existing ~/bin PATH entry.
+    "${homeDirectory}/bin".source = mkOutOfStoreSymlink "${homeDirectory}/.config/home-manager/bin";
+
   	# Symlink Niri's systemd user units into ~/.local/share/systemd/user/ so
   	# systemd can find them, but sd-switch won't restart niri mid-session.
     ".local/share/systemd/user/niri.service".source =

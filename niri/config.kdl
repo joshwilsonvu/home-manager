@@ -91,7 +91,7 @@ input {
   keyboard {
     xkb {
       layout "us"
-      options "caps:swapescape"
+      // options "caps:swapescape"
     }
 
     // Enable numlock on startup, omitting this setting disables it.
@@ -131,6 +131,13 @@ input {
   // Focus windows and outputs automatically when moving the mouse into them.
   // Setting max-scroll-amount="0%" makes it work only on windows already fully on screen.
   focus-follows-mouse max-scroll-amount="50%"
+}
+
+// Disable the hot corners.
+gestures {
+  hot-corners {
+    off
+  }
 }
 
 // Settings that influence how windows are positioned and sized.
@@ -297,7 +304,7 @@ binds {
 
   // Launcher (Vicinae, not "noctalia msg panel-toggle launcher")
   Mod+Space hotkey-overlay-title="Launcher" { spawn-sh "vicinae toggle"; }
-  
+
   // Audio & Brightness
   XF86AudioRaiseVolume allow-when-locked=true { spawn-sh "noctalia msg volume-up"; }
   XF86AudioLowerVolume allow-when-locked=true { spawn-sh "noctalia msg volume-down"; }
@@ -386,7 +393,7 @@ binds {
   // set-column-width "100" will make the column occupy 200 physical screen pixels.
   Mod+Shift+Equal { set-column-width "+10%"; }
   Mod+Shift+Minus { set-column-width "-10%"; }
-  
+
   Mod+F { fullscreen-window; }
   Mod+C { center-window; }
 
@@ -416,11 +423,7 @@ binds {
 
   // Powers off the monitors. To turn them back on, do any input like
   // moving the mouse or pressing any other key.
-  Mod+Ctrl+P { power-off-monitors; }
-
-  // Pause/resume the focused window's process.
-  Mod+P hotkey-overlay-title="Pause focused window" repeat=false { spawn-sh "kill -STOP $(niri msg --json focused-window | jq '.pid')"; }
-  Mod+Shift+P hotkey-overlay-title="Resume focused window" repeat=false { spawn-sh "kill -CONT $(niri msg --json focused-window | jq '.pid')"; }
+  Mod+Shift+P { power-off-monitors; }
 }
 
 include "./noctalia.kdl"

@@ -1,0 +1,47 @@
+#!/bin/sh
+# Run a Steam game in a resizable Gamescope window on the discrete AMD GPU.
+# Steam launch options commonly use: gamescope-steam -- %command%
+# Remove that separator because this wrapper supplies Gamescope's separator.
+if [ "$1" = "--" ]; then
+  shift
+fi
+
+# Set GAMESCOPE_FILTER in Steam's launch options to override the upscaler
+# filter, e.g. `GAMESCOPE_FILTER=pixel %command%` for pixel-art games.
+# Defaults to fsr. See `gamescope --help` for other valid values
+# (linear, nearest, fsr, nis, pixel).
+GAMESCOPE_FILTER="${GAMESCOPE_FILTER:-fsr}"
+
+# --- Discrete GPU selection (RX 7700S / Navi 33) ------------------------
+#
+# DRI_PRIME below pins the PCI bus address of the dGPU; --prefer-vk-device
+# (further down) pins its Vulkan vendor:device ID. Both were needed because
+# DRI_PRIME alone let the Steam Runtime fall back to the integrated 780M.
+#
+# To re-derive these on another machine, run:
+#     lspci -nn | grep -E 'VGA|3D controller'
+# which prints a line per GPU like:
+#     03:00.0 VGA compatible controller [0300]: ... Radeon RX 7700S [1002:7480]
+# - The PCI bus address is the leading "03:00.0" -> DRI_PRIME becomes
+#   "pci-0000_03_00_0" (prefix with "0000_", replace ":" and "." with "_").
+# - The Vulkan vendor:device ID is the bracketed pair at the end ("1002:7480")
+#   -> pass directly to --prefer-vk-device.
+export DRI_PRIME=pci-0000_03_00_0!
+
+# Gamescope needs the system Mesa/Vulkan loader (not the Steam Runtime's
+# bundled libraries), but Proton needs its original LD_LIBRARY_PATH/LD_PRELOAD
+# to start up. So we strip both for gamescope itself, and restore them only
+# for the exec'd game command below.
+SAVED_LD_LIBRARY_PATH=$LD_LIBRARY_PATH
+SAVED_LD_PRELOAD=$LD_PRELOAD
+
+exec env -u LD_LIBRARY_PATH -u LD_PRELOAD gamescope \
+  --output-width 1920 \
+  --output-height 1080 \
+  --nested-width 1920 \
+  --nested-height 1080 \
+  --nested-refresh 60 \
+  --nested-unfocused-refresh 1 \
+  --filter "$GAMESCOPE_FILTER" \
+  --prefer-vk-device 1002:7480 \
+  -- env LD_LIBRARY_PATH="$SAVED_LD_LIBRARY_PATH" LD_PRELOAD="$SAVED_LD_PRELOAD" "$@"
