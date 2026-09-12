@@ -88,6 +88,7 @@ in
       pkgs.vicinae
       pkgs.localsend
       pkgs.sooperlooper
+      pkgs.pipewire.jack # pw-jack: run JACK apps against PipeWire's JACK server
       # fonts
       pkgs.ibm-plex
       # theming
@@ -121,6 +122,12 @@ in
     # Portal configuration required by Niri for screensharing, file dialogs, etc.
     "xdg-desktop-portal/niri-portals.conf".source =
     "${pkgs.niri}/share/xdg-desktop-portal/niri-portals.conf";
+  };
+
+  # Apply desktop entries
+  xdg.dataFile.applications = {
+    source = mkOutOfStoreSymlink "${homeDirectory}/.config/home-manager/desktop";
+    recursive = true;
   };
 
   programs = {

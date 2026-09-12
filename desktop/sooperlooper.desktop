@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Sooperlooper
+Comment=Live looping sampler (via PipeWire's JACK compatibility layer)
+Exec=pw-jack slgui
+Icon=audio-x-generic
+Terminal=false
+Categories=AudioVideo;Audio;
