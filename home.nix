@@ -115,6 +115,12 @@ in
       "${pkgs.niri}/lib/systemd/user/niri-shutdown.target";
     # Symlink this home-manager config dir to ~/dev/dotfiles
     "${homeDirectory}/dev/dotfiles".source = mkOutOfStoreSymlink "${homeDirectory}/.config/home-manager";
+
+    # Apply desktop entries into a subdir of the existing desktop entries dir.
+    "${homeDirectory}/.local/share/applications/home-manager" = {
+      source = mkOutOfStoreSymlink "${homeDirectory}/.config/home-manager/desktop";
+      recursive = true;
+    };
   };
 
   # Apply shorthand config files/dirs
@@ -122,12 +128,6 @@ in
     # Portal configuration required by Niri for screensharing, file dialogs, etc.
     "xdg-desktop-portal/niri-portals.conf".source =
     "${pkgs.niri}/share/xdg-desktop-portal/niri-portals.conf";
-  };
-
-  # Apply desktop entries
-  xdg.dataFile.applications = {
-    source = mkOutOfStoreSymlink "${homeDirectory}/.config/home-manager/desktop";
-    recursive = true;
   };
 
   programs = {
