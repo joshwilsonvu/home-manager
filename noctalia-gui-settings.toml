@@ -105,16 +105,16 @@ transition = [ "fade" ]
     interval_seconds = 600
 
     [wallpaper.default]
-    path = "/home/josh/.config/home-manager/wallpapers/nasa/9510878~large.jpg"
+    path = "/home/josh/.config/home-manager/wallpapers/cassete-futurism/wp16232220-cassette-futurism-wallpapers.webp"
 
     [wallpaper.last]
-    path = "/home/josh/.config/home-manager/wallpapers/nasa/9510878~large.jpg"
+    path = "/home/josh/.config/home-manager/wallpapers/cassete-futurism/wp16232220-cassette-futurism-wallpapers.webp"
 
     [wallpaper.monitors.DP-5]
     path = "/home/josh/.config/home-manager/wallpapers/nasa/s93-39737~large.jpg"
 
     [wallpaper.monitors.eDP-2]
-    path = "/home/josh/.config/home-manager/wallpapers/nasa/9510878~large.jpg"
+    path = "/home/josh/.config/home-manager/wallpapers/cassete-futurism/wp16232220-cassette-futurism-wallpapers.webp"
 
     [[wallpaper.favorite]]
     path = "/home/josh/.config/home-manager/wallpapers/arco-5.png"
