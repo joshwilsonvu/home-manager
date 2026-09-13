@@ -1,0 +1,154 @@
+config_version = 2
+
+[bar.default]
+background_opacity = 0.99999997764825821
+center = [ "media", "audio_visualizer", "spatial-audio", "disable_spatial_audio" ]
+end = [ "clipboard", "network", "battery", "wallpaper", "notifications", "settings", "session" ]
+start = [ "clock", "cpu2", "tray" ]
+
+[[control_center.shortcuts]]
+type = "wifi"
+
+[[control_center.shortcuts]]
+type = "bluetooth"
+
+[[control_center.shortcuts]]
+type = "nightlight"
+
+[[control_center.shortcuts]]
+type = "power_profile"
+
+[[control_center.shortcuts]]
+type = "dark_mode"
+
+[[control_center.shortcuts]]
+type = "media"
+
+[lockscreen_widgets]
+enabled = false
+schema_version = 2
+widget_order = [ "lockscreen-login-box@DP-5", "lockscreen-login-box@eDP-2" ]
+
+    [lockscreen_widgets.grid]
+    cell_size = 16
+    major_interval = 4
+    visible = true
+
+    [lockscreen_widgets.widget."lockscreen-login-box@DP-5"]
+    box_height = 70.0
+    box_width = 400.0
+    cx = 1280.0
+    cy = 1321.0
+    output = "DP-5"
+    rotation = 0.0
+    type = "login_box"
+
+        [lockscreen_widgets.widget."lockscreen-login-box@DP-5".settings]
+        background_color = "surface_variant"
+        background_opacity = 0.88
+        background_radius = 12.0
+        center_password_text = false
+        input_opacity = 1.0
+        input_radius = 6.0
+        show_caps_lock = true
+        show_keyboard_layout = true
+        show_login_button = true
+        show_password_hint = true
+
+    [lockscreen_widgets.widget."lockscreen-login-box@eDP-2"]
+    box_height = 70.0
+    box_width = 400.0
+    cx = 1024.0
+    cy = 1161.0
+    output = "eDP-2"
+    rotation = 0.0
+    type = "login_box"
+
+        [lockscreen_widgets.widget."lockscreen-login-box@eDP-2".settings]
+        background_color = "surface_variant"
+        background_opacity = 0.88
+        background_radius = 12.0
+        center_password_text = false
+        input_opacity = 1.0
+        input_radius = 6.0
+        show_caps_lock = true
+        show_keyboard_layout = true
+        show_login_button = true
+        show_password_hint = true
+
+[nightlight]
+temperature_night = 4500
+
+[shell]
+app_icon_color = "primary"
+
+    [shell.panel]
+    transparency_mode = "soft"
+
+[theme]
+builtin = "Ayu"
+community_palette = "Flexoki"
+custom_palette = "flexoki"
+source = "custom"
+wallpaper_scheme = "m3-content"
+
+    [theme.templates]
+    builtin_ids = [ "btop", "gtk3", "gtk4", "ghostty", "kcolorscheme", "kitty", "niri", "qt" ]
+    community_ids = [ "opencode", "pi-agent", "spicetify", "pywalfox", "obsidian", "zed", "vicinae", "fastfetch", "bat" ]
+
+[wallpaper]
+fill_color = "surface"
+transition = [ "fade" ]
+
+    [wallpaper.automation]
+    enabled = true
+    interval_seconds = 600
+
+    [wallpaper.default]
+    path = "/home/josh/.config/home-manager/wallpapers/nasa/9510878~large.jpg"
+
+    [wallpaper.last]
+    path = "/home/josh/.config/home-manager/wallpapers/nasa/9510878~large.jpg"
+
+    [wallpaper.monitors.DP-5]
+    path = "/home/josh/.config/home-manager/wallpapers/nasa/s93-39737~large.jpg"
+
+    [wallpaper.monitors.eDP-2]
+    path = "/home/josh/.config/home-manager/wallpapers/nasa/9510878~large.jpg"
+
+    [[wallpaper.favorite]]
+    path = "/home/josh/.config/home-manager/wallpapers/arco-5.png"
+    theme_mode = "auto"
+
+[widget.audio_visualizer]
+bands = 48
+width = 128
+
+[widget.clock]
+format = "{:%a %b %e, %l:%M %p}"
+
+[widget.cpu2]
+display = "text"
+glyph = "cpu"
+show_label = false
+type = "sysmon"
+
+[widget.disable_spatial_audio]
+command = "jamesdsp --load-preset Bypass"
+glyph = "bluetooth-device-speaker"
+tooltip = "Disable headphone spatial audio."
+type = "custom_button"
+
+[widget.media]
+hide_when_no_media = false
+
+[widget.spatial-audio]
+command = "jamesdsp --load-preset Headphones"
+enable_scroll = false
+glyph = "bluetooth-device-headphones"
+tooltip = "Enable spatial audio for headphones."
+type = "custom_button"
+
+[widget.tray]
+drawer_item_size = 32.0
+hidden = [ "Network", "Update-notifier" ]

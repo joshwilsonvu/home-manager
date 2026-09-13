@@ -30,6 +30,7 @@ let
     "neowall"
     "zed"
     "ghostty"
+    "vicinae"
   ];
   confLinks = flatMerge [confFiles confDirs];
 
@@ -107,6 +108,7 @@ in
     # Expose version-controlled user scripts through the existing ~/bin PATH entry.
     "${homeDirectory}/bin".source = mkOutOfStoreSymlink "${homeDirectory}/.config/home-manager/bin";
 
+	
   	# Symlink Niri's systemd user units into ~/.local/share/systemd/user/ so
   	# systemd can find them, but sd-switch won't restart niri mid-session.
     ".local/share/systemd/user/niri.service".source =
@@ -121,7 +123,11 @@ in
       source = mkOutOfStoreSymlink "${homeDirectory}/.config/home-manager/desktop";
       recursive = true;
     };
+    
+    # Track Noctalia's GUI overrides
+    "${homeDirectory}/.local/state/noctalia/settings.toml".source = mkOutOfStoreSymlink "${homeDirectory}/.config/home-manager/noctalia-gui-settings.toml";
   };
+  
 
   # Apply shorthand config files/dirs
   xdg.configFile = confLinks // {

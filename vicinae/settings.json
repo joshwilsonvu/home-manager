@@ -1,0 +1,92 @@
+// This configuration is merged with the default vicinae configuration file, which you can obtain by running the `vicinae config default` command.
+// Every item defined in this file takes precedence over the values defined in the default config or any other imported file.
+//
+// You can make manual edits to this file, however you should keep in mind that this file may be written to by vicinae when a configuration change is made through the GUI.
+// When that happens, any custom comments or formatting will be lost.
+//
+// If you want to maintain a configuration file with your own comments and formatting, you should create a separate file and add it to the 'imports' array.
+//
+// Learn more about configuration at https://docs.vicinae.com/config
+
+{
+   "$schema": "https://vicinae.com/schemas/config.json",
+   "font": {
+      "rendering": "qt",
+      "normal": {
+         "family": "Sans Serif",
+         "size": 11
+      }
+   },
+   "theme": {
+      "dark": {
+         "name": "noctalia"
+      }
+   },
+   "telemetry": {
+      "system_info": true
+   },
+   "launcher_window": {
+      "rounding": 20,
+      "opacity": 0.9,
+      "client_side_decorations": {
+         "enabled": true,
+         "border_width": 1,
+         "shadow_size": 40
+      },
+      "layer_shell": {
+         "enabled": true
+      }
+   },
+   "providers": {
+      "@Gimblet/store.vicinae.noctalia-shell-wallpaper-selector": {
+         "preferences": {
+            "display_name": "eDP-2",
+            "wallpaper_directory": "/home/josh/.config/home-manager/wallpapers"
+         }
+      },
+      "applications": {
+         "entrypoints": {
+            "brasero": {
+               "enabled": false
+            },
+            "btop": {
+               "enabled": false
+            },
+            "org.chromium.Chromium": {
+               "enabled": false
+            }
+         }
+      },
+      "files": {
+         "preferences": {
+            "autoIndexing": true,
+            "excludedIndexingPaths": [
+               "/home/josh/.cache",
+               "/home/josh/.cargo",
+               "/home/josh/.copilot",
+               "/home/josh/.gnupg",
+               "/home/josh/.lmstudio",
+               "/home/josh/.local",
+               "/home/josh/.mono",
+               "/home/josh/.mozilla",
+               "/home/josh/.nix-defexpr",
+               "/home/josh/.nix-profile",
+               "/home/josh/.npm",
+               "/home/josh/.opencode",
+               "/home/josh/.pi",
+               "/home/josh/.pki",
+               "/home/josh/.rustup",
+               "/home/josh/.ssh",
+               "/home/josh/.steam",
+               "/home/josh/.steam-backup",
+               "/home/josh/.var",
+               "/home/josh/.config",
+               "/home/josh/result"
+            ],
+            "indexingPaths": [
+               "/home/josh"
+            ]
+         }
+      }
+   }
+}
